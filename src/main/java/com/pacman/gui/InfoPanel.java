@@ -9,7 +9,12 @@ import java.awt.*;
 
 public class InfoPanel extends JPanel {
     public MainPanel mainPanel;
-
+    JLabel scoreLabel;
+    JLabel levelLabel;
+    JLabel healthLabel;
+    public int score;
+    public int level;
+    public int health;
     public InfoPanel(MainPanel mainPanel){
         setSettingsUI();
         this.mainPanel = mainPanel;
@@ -23,13 +28,13 @@ public class InfoPanel extends JPanel {
         rightLabels.setLayout(new BoxLayout(rightLabels, BoxLayout.X_AXIS));
         rightLabels.setBorder(new LineBorder(Colors.border, 5));
 
-        JLabel scoreLabel = new JLabel("Score:");
+        scoreLabel = new JLabel("Score: " + score);
         scoreLabel.setBorder(new EmptyBorder(5,5,5,5));
         scoreLabel.setOpaque(true);
-        JLabel levelLabel = new JLabel("Level:");
+        levelLabel = new JLabel("Level: " + level+1);
         levelLabel.setBorder(new EmptyBorder(5,5,5,5));
         levelLabel.setOpaque(true);
-        JLabel healthLabel = new JLabel("Health:");
+        healthLabel = new JLabel("Health: " + health);
         healthLabel.setBorder(new EmptyBorder(5,5,5,5));
         healthLabel.setOpaque(true);
         JLabel homeLabel = new JLabel("Home");
@@ -59,5 +64,14 @@ public class InfoPanel extends JPanel {
         UIManager.put("Label.background", Colors.labels);
         UIManager.put("Label.foreground", Colors.text);
         UIManager.put("Label.font", new Font(null, Font.PLAIN, 40));
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        scoreLabel.setText("Score: " + score);
+        levelLabel.setText("Level: " + level);
+        healthLabel.setText("Health: " + health);
     }
 }

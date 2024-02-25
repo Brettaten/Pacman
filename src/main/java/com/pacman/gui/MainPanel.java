@@ -1,6 +1,7 @@
 package com.pacman.gui;
 
 
+import com.pacman.logic.GameUpdate;
 import com.pacman.logic.Settings;
 
 import javax.swing.*;
@@ -14,6 +15,7 @@ public class MainPanel extends JPanel {
     public InfoPanel infoPanel;
     public SettingsPanel settingsPanel;
     public ThemesPanel themesPanel;
+    public static GameUpdate gameUpdate;
     public MainPanel(){
         this.setBackground(Colors.mainPanel);
 
@@ -47,15 +49,14 @@ public class MainPanel extends JPanel {
         this.clear();
         this.setLayout(new BorderLayout());
         Settings.setCurrentMenu(1);
-        gamePanel = new GamePanel(this);
         infoPanel = new InfoPanel(this);
-        this.add(gamePanel, BorderLayout.CENTER);
+        gamePanel = new GamePanel(this, infoPanel);
         this.add(infoPanel, BorderLayout.NORTH);
+        this.add(gamePanel, BorderLayout.CENTER);
         gamePanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                gamePanel.setGameSize();
-                gamePanel.generateGame();
+                gameUpdate = new GameUpdate(gamePanel, infoPanel);
                 gamePanel.removeComponentListener(this);
             }
         });

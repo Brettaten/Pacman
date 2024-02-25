@@ -1,6 +1,7 @@
 package com.pacman.logic;
 
 import com.pacman.gui.GamePanel;
+import com.pacman.gui.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +19,12 @@ public class Player extends JLabel implements Movable{
     int playerSize;
     double relativeSize;
     double relativeTick;
-    public Player(){
+    GamePanel gamePanel;
+    public Player(GamePanel gamePanel){
         relativeSize = 0.75;
         relativeTick = 120;
         playerSize = (int) (relativeSize * GamePanel.size);
+        this.gamePanel = gamePanel;
         this.setOpaque(true);
         this.setBackground(Color.BLUE);
         this.setSize(new Dimension(playerSize, playerSize));
@@ -124,19 +127,30 @@ public class Player extends JLabel implements Movable{
         int coinDistanceTop = GamePanel.size/2 - GamePanel.size/10;
         int coinDistanceBottom = GamePanel.size/2 + GamePanel.size/10;
 
-        if(remainderX < coinDistanceBottom && remainderY < coinDistanceBottom && remainderX + playerSize > coinDistanceTop && remainderY + playerSize > coinDistanceTop){
-            GamePanel.gameBoard[playerX][playerY] = 1;
+        if(GamePanel.gameBoard[playerX][playerY] != 1){
+            if(remainderX < coinDistanceBottom && remainderY < coinDistanceBottom && remainderX + playerSize > coinDistanceTop && remainderY + playerSize > coinDistanceTop){
+                gamePanel.setBord(playerX, playerY, 1);
+                MainPanel.gameUpdate.addScore(1);
+            }
         }
-        if(remainderY < coinDistanceBottom && nextX > coinDistanceTop){
-            GamePanel.gameBoard[playerX+1][playerY] = 1;
+        if(playerX + 1 < 38 && GamePanel.gameBoard[playerX+1][playerY] != 1){
+            if(remainderY < coinDistanceBottom && nextX > coinDistanceTop){
+                gamePanel.setBord(playerX+1, playerY, 1);
+                MainPanel.gameUpdate.addScore(1);
+            }
         }
-        if(remainderX < coinDistanceBottom && nextY > coinDistanceTop){
-            GamePanel.gameBoard[playerX][playerY+1] = 1;
+        if(playerY + 1 < 18 && GamePanel.gameBoard[playerX][playerY+1] != 1){
+            if(remainderX < coinDistanceBottom && nextY > coinDistanceTop){
+                gamePanel.setBord(playerX, playerY+1, 1);
+                MainPanel.gameUpdate.addScore(1);
+            }
         }
-        if(nextX > coinDistanceTop && nextY > coinDistanceTop){
-            GamePanel.gameBoard[playerX+1][playerY+1] = 1;
+        if(playerX + 1 < 38 && playerY + 1 < 18 && GamePanel.gameBoard[playerX+1][playerY+1] != 1){
+            if(nextX > coinDistanceTop && nextY > coinDistanceTop){
+                gamePanel.setBord(playerX+1, playerY+1, 1);
+                MainPanel.gameUpdate.addScore(1);
+            }
         }
-
     }
     private int getRelativeSize(){
         return  (int) (GamePanel.size * relativeSize);

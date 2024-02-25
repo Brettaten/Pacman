@@ -1,5 +1,6 @@
 package com.pacman.gui;
 
+import com.pacman.logic.GameUpdate;
 import com.pacman.logic.Player;
 
 import javax.swing.*;
@@ -9,6 +10,8 @@ import java.util.Random;
 
 public class GamePanel extends JPanel {
     MainPanel mainPanel;
+    InfoPanel infoPanel;
+    public GameUpdate gameUpdate;
     Dimension gameSize;
     Point gameLocation;
     public static int sizeX;
@@ -20,12 +23,14 @@ public class GamePanel extends JPanel {
     int arcSize;
     public static int[][] gameBoard;
     public Player player;
-    public GamePanel(MainPanel mainPanel){
+    public GamePanel(MainPanel mainPanel, InfoPanel infoPanel){
         this.mainPanel = mainPanel;
+        this.infoPanel = infoPanel;
         this.setBackground(Colors.gameBackground);
         this.setBorder(new LineBorder(Colors.border, 5));
         this.setLayout(null);
 
+        this.gameUpdate = MainPanel.gameUpdate;
         minPath = 50;
         maxPath = new Random().nextInt(50, 685);
     }
@@ -151,8 +156,11 @@ public class GamePanel extends JPanel {
         return amountOfPath;
     }
     private void setUpEntities(){
-        player = new Player();
+        player = new Player(this);
         this.add(player);
+    }
+    public void setBord(int posX, int posY, int num){
+        gameBoard[posX][posY] = num;
     }
 
     @Override
